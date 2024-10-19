@@ -2,9 +2,18 @@
 module.exports = {
   content: [
     "./src/**/*.{js,jsx,ts,tsx}",
+    "./public/index.html",
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        customRed: '#BE123C',
+        customBlack: '#111114',
+        customOb: '##1b1b1e',
+        customHover: '#1f1f22',
+        customPinkHover: '#c7274e'
+      },
+    },
   },
   plugins: [],
-}
+};

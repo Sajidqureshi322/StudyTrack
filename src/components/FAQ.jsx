@@ -62,7 +62,7 @@ const FAQ = () => {
             Can't find the answer you're looking for? Please chat to our
             friendly team.
           </p>
-          <button className="bg-red-500 text-white px-6 py-2 rounded-full">
+          <button className="bg-customRed text-white   px-6 py-2 rounded-full hover:bg-customPinkHover">
             Get in Touch
           </button>
         </div>
