@@ -14,7 +14,7 @@ const Companies = () => {
 
   return (
     <div className="bg-black text-white py-10">
-      <h2 className="text-center text-3xl font-bold mb-5">
+      <h2 className="text-center text-4xl font-bold mb-9">
         Gear Up for <span className="text-customRed">Success:</span> Your Ultimate Preparation Track!
       </h2>
       <div className="max-w-4xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-7">
