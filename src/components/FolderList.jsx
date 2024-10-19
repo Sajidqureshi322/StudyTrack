@@ -3,7 +3,8 @@ import { FaFolder } from 'react-icons/fa';
 
 const FolderList = ({ folders, handleFolderClick }) => {
   return (
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-5">
+    <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-5   ">
+    
       {Object.keys(folders).map((folderName) => (
         <div
           key={folderName}

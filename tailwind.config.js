@@ -13,6 +13,10 @@ module.exports = {
         customHover: '#1f1f22',
         customPinkHover: '#c7274e'
       },
+      fontFamily: {
+        'roboto': ['Roboto', 'sans-serif'], // Example for Google Fonts
+        'customFont': ['Antonio'], // Example for custom .ttf font
+      },
     },
   },
   plugins: [],
