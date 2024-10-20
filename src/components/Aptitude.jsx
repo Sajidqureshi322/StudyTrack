@@ -236,7 +236,7 @@ const Aptitude = () => {
       </div>
 
       {/* Right Section - Folders and Quiz */}
-      <div className="w-3/4 p-5 h-screen overflow-y-auto">
+      <div className="rightSection w-3/4 p-5 h-screen overflow-y-auto">
         <Breadcrumb
           path={[
             { name: 'Aptitude', onClick: () => setCurrentCategory(null) },

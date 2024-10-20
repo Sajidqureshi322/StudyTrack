@@ -22,16 +22,17 @@ const App = () => {
             {/* Route for the Signup Page */}
             <Route path="/signup" element={<Signup />} />
             {/* Other routes */}
-            <Route path="/aptitude" element={<Aptitude />} />
+            <Route path="/aptitude" element={<div><Aptitude /> <Footer/></div>} />
             <Route path="/" element={
               <div>
                 <Companies />
                 <FAQ />
+                <Footer />
               </div>
             } />
           </Routes>
         </div>
-        <Footer />
+        
       </Router>
     </>
   );
