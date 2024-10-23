@@ -1,6 +1,10 @@
 // src/components/Signup.js
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import base_url from '../server/api';
 
 const Signup = () => {
     const [name, setName] = useState('');
@@ -15,8 +19,24 @@ const Signup = () => {
         // Handle signup logic (e.g., API call)
         console.log({ name, email, password, phoneNumber, universityName });
 
-        // Redirect to login page after signup
-        navigate('/login');
+        axios.post(base_url + "/register", {
+            name : name,
+            email : email,
+            password : password,
+            phoneNumber : phoneNumber ,
+            universityName : universityName
+        })
+        .then(function (response) {
+            toast.success("User Registered Successfully");
+            console.log(response);
+            
+            // Redirect to login page after signup
+            navigate('/login'); 
+        })
+        .catch(function (error) {
+            toast.error("Server Error ! Try Again");
+            console.log("Error Occured" + error);
+        });     
     };
 
     return (
