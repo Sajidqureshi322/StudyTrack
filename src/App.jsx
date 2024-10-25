@@ -2,6 +2,7 @@
 import React from 'react';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import Aptitude from './components/Aptitude';
+import Coding from './components/Coding'
 import Companies from './components/Companies';
 import FAQ from './components/FAQ';
 import Footer from './components/Footer';
@@ -23,6 +24,10 @@ const App = () => {
             <Route path="/signup" element={<Signup />} />
             {/* Other routes */}
             <Route path="/aptitude" element={<div><Aptitude /> <Footer/></div>} />
+            <Route path="/coding" element={<div><Coding /> <Footer/></div>} />
+          
+           
+            
             <Route path="/" element={
               <div>
                 <Companies />
