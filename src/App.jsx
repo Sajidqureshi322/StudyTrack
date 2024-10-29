@@ -8,8 +8,9 @@ import FAQ from './components/FAQ';
 import Footer from './components/Footer';
 import Header from './components/header';
 import Login from './components/login';
-import Signup from './components/Signup'; // Import the Signup component
+import Signup from './components/Signup'; 
 import './index.css';
+
 
 const App = () => {
   return (
@@ -25,6 +26,7 @@ const App = () => {
             {/* Other routes */}
             <Route path="/aptitude" element={<div><Aptitude /> <Footer/></div>} />
             <Route path="/coding" element={<div><Coding /> <Footer/></div>} />
+            
           
            
             
