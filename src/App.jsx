@@ -10,6 +10,7 @@ import Header from './components/header';
 import Login from './components/login';
 import Signup from './components/Signup'; 
 import './index.css';
+import InterviewPage from './components/InterviewPage';
 
 
 const App = () => {
@@ -26,6 +27,7 @@ const App = () => {
             {/* Other routes */}
             <Route path="/aptitude" element={<div><Aptitude /> <Footer/></div>} />
             <Route path="/coding" element={<div><Coding /> <Footer/></div>} />
+            <Route path="/interview" element={<InterviewPage />} />
             
           
            
