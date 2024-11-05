@@ -1,5 +1,5 @@
 // src/App.jsx
-import React from 'react';
+import React, { useState } from 'react';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import Aptitude from './components/Aptitude';
 import Coding from './components/Coding'
@@ -12,26 +12,23 @@ import Signup from './components/Signup';
 import './index.css';
 import InterviewPage from './components/InterviewPage';
 
-
 const App = () => {
+  // State to control visibility of Login and Signup buttons
+  const [showButtons, setShowButtons] = useState(true);
+
   return (
     <>
       <Router>
-        <Header />
+        {/* Pass showButtons state and setShowButtons function to Header */}
+        <Header showButtons={showButtons} />
         <div className="container mx-auto mt-16">
           <Routes>
-            {/* Route for the Login Page */}
-            <Route path="/login" element={<Login />} />
-            {/* Route for the Signup Page */}
+            {/* Pass setShowButtons to Login component */}
+            <Route path="/login" element={<Login setShowButtons={setShowButtons} />} />
             <Route path="/signup" element={<Signup />} />
-            {/* Other routes */}
             <Route path="/aptitude" element={<div><Aptitude /> <Footer/></div>} />
             <Route path="/coding" element={<div><Coding /> <Footer/></div>} />
             <Route path="/interview" element={<InterviewPage />} />
-            
-          
-           
-            
             <Route path="/" element={
               <div>
                 <Companies />
@@ -41,7 +38,6 @@ const App = () => {
             } />
           </Routes>
         </div>
-        
       </Router>
     </>
   );
