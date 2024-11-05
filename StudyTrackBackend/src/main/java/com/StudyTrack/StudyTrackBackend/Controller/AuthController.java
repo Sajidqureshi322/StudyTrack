@@ -9,6 +9,8 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/api")
 @CrossOrigin("http://localhost:3000")
@@ -25,6 +27,11 @@ public class AuthController {
 
     @PostMapping("/register")
     public String register(@RequestBody UserProfile userProfile) {
+        Optional<UserProfile> user = userProfileRepository.findByEmail(userProfile.getEmail());
+        if (user.isPresent()) {
+            System.out.println("Email of this user is: " + userProfile.getEmail());
+            return "User with this email already exists!";
+        }
         userProfile.setPassword(passwordEncoder.encode(userProfile.getPassword()));
         System.out.println(userProfile);
         userProfileRepository.save(userProfile);
