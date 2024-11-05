@@ -9,7 +9,8 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
@@ -27,10 +28,9 @@ public class AuthController {
 
     @PostMapping("/register")
     public String register(@RequestBody UserProfile userProfile) {
-        Optional<UserProfile> user = userProfileRepository.findByEmail(userProfile.getEmail());
-        if (user.isPresent()) {
-            System.out.println("Email of this user is: " + userProfile.getEmail());
-            return "User with this email already exists!";
+        System.out.println(userProfile);
+        if(!userProfileRepository.findByEmail(userProfile.getEmail()).isEmpty()){
+            return "Email already registered";
         }
         userProfile.setPassword(passwordEncoder.encode(userProfile.getPassword()));
         System.out.println(userProfile);
@@ -44,16 +44,28 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody UserProfile loginRequest) {
+    public Map<String, String> login(@RequestBody Map<String, String> credentials) {
+        String email = credentials.get("email");
+        String password = credentials.get("password");
+
+        System.out.println("Email: " + email);
+        System.out.println("Password: " + password);
+
         try {
-            Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken( loginRequest.getEmail(),
-                            loginRequest.getPassword()
-                    )
+            Authentication auth = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(email, password)
             );
-            return "Login successful!";
+
+            Map<String, String> response = new HashMap<>();
+            response.put("message", "Login successful");
+            return response;
         } catch (AuthenticationException e) {
-            return "Invalid email or password.";
+            System.out.println("Authentication failed: " + e.getMessage()); // Add this log
+            Map<String, String> response = new HashMap<>();
+            response.put("message", "Invalid email or password");
+            return response;
         }
     }
+
 }
+

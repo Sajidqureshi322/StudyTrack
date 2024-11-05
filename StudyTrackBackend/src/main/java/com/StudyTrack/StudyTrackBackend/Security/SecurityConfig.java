@@ -1,9 +1,11 @@
 package com.StudyTrack.StudyTrackBackend.Security;
 
+import com.StudyTrack.StudyTrackBackend.Service.CustomUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -15,16 +17,27 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @Configuration
 public class SecurityConfig {
 
+    private final CustomUserDetailsService userDetailsService;
+
+    public SecurityConfig(CustomUserDetailsService userDetailsService) {
+        this.userDetailsService = userDetailsService;
+    }
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-                .csrf(httpSecurityCsrfConfigurer -> httpSecurityCsrfConfigurer.disable())
+        http.
+                csrf().disable()
+                .cors() // Enable CORS
+                .and()
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/hme", "/api/register", "/api/login").permitAll()
+                        .requestMatchers("/api/register", "/api/home" , "/api/login", "/api/login-error").permitAll()
                         .anyRequest().authenticated()
                 )
-                .formLogin(withDefaults());
-        ;  // Use basic auth for simplicity; consider JWT for production.
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // Use stateless JWT sessions
+                )
+        ;
+
         return http.build();
     }
 
@@ -38,3 +51,4 @@ public class SecurityConfig {
         return configuration.getAuthenticationManager();
     }
 }
+
