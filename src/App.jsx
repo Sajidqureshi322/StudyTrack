@@ -11,6 +11,7 @@ import Login from './components/login';
 import Signup from './components/Signup'; 
 import './index.css';
 import InterviewPage from './components/InterviewPage';
+import { ToastContainer } from 'react-toastify';
 
 const App = () => {
   // State to control visibility of Login and Signup buttons
@@ -18,6 +19,7 @@ const App = () => {
 
   return (
     <>
+      <ToastContainer/>
       <Router>
         {/* Pass showButtons state and setShowButtons function to Header */}
         <Header showButtons={showButtons} />

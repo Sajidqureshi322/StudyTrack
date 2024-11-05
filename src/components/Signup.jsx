@@ -27,11 +27,16 @@ const Signup = () => {
             universityName : universityName
         })
         .then(function (response) {
-            toast.success("User Registered Successfully");
-            console.log(response);
-            
+            console.log(response.data);
+            if(response.data === "User with this email already exists!"){
+                toast.warning("User already exists");
+            }
+            else{
+                toast.success("User Registered Successfully");
+                console.log(response);
+                navigate('/login'); 
+            }
             // Redirect to login page after signup
-            navigate('/login'); 
         })
         .catch(function (error) {
             toast.error("Server Error ! Try Again");
