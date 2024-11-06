@@ -12,10 +12,13 @@ import Signup from './components/Signup';
 import './index.css';
 import InterviewPage from './components/InterviewPage';
 import { ToastContainer } from 'react-toastify';
+import Profile from './components/Profile';
+
 
 const App = () => {
   // State to control visibility of Login and Signup buttons
   const [showButtons, setShowButtons] = useState(true);
+  const [codingProgress, setCodingProgress] = useState(0);
 
   return (
     <>
@@ -29,8 +32,9 @@ const App = () => {
             <Route path="/login" element={<Login setShowButtons={setShowButtons} />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/aptitude" element={<div><Aptitude /> <Footer/></div>} />
-            <Route path="/coding" element={<div><Coding /> <Footer/></div>} />
+            <Route path="/coding" element={<div><Coding onProgressUpdate={setCodingProgress} /> <Footer /></div>} />
             <Route path="/interview" element={<InterviewPage />} />
+            <Route path="/profile" element={<Profile codingProgress={codingProgress} />} />
             <Route path="/" element={
               <div>
                 <Companies />
