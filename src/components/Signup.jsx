@@ -1,7 +1,7 @@
 // src/components/Signup.js
+import axios from 'axios';
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import base_url from '../server/api';
@@ -28,7 +28,7 @@ const Signup = () => {
         })
         .then(function (response) {
             console.log(response.data);
-            if(response.data === "User with this email already exists!"){
+            if(response.data === "Email already registered"){
                 toast.warning("User already exists");
             }
             else{

@@ -1,8 +1,8 @@
 import axios from 'axios';
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import base_url from '../server/api';
 import { toast } from 'react-toastify';
+import base_url from '../server/api';
 
 const Login = ({ setShowButtons }) => {
   const [email, setEmail] = useState('');
@@ -42,7 +42,7 @@ const Login = ({ setShowButtons }) => {
   return (
     <div className="min-h-screen bg-black flex flex-col justify-center items-center">
       <div className="bg-customBlack rounded-lg p-8 w-96 shadow-lg border-2 border-customOb">
-        <h1 className="text-center text-3xl font-bold text-customRed">CourseQuest</h1>
+        <h1 className="text-center text-3xl font-bold text-customRed">StudyTrack</h1>
         <p className="text-center text-gray-300 mb-6">Sign in with your email</p>
         
         <div className="space-y-4">
