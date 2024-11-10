@@ -15,10 +15,12 @@ import Login from './components/login';
 import ProtectedRoute from './components/ProtectedRoute';
 import Signup from './components/Signup';
 import './index.css';
+import Profile from './components/Profile';
 
 const App = () => {
   // State to control visibility of Login and Signup buttons
   const [showButtons, setShowButtons] = useState(true);
+  const [codingProgress, setCodingProgress] = useState(0);
 
   return (
     <>
@@ -32,9 +34,10 @@ const App = () => {
             <Route path="/signup" element={<Signup />} />
             {/* Add Profile route with ProtectedRoute */}
             <Route path="/aptitude" element={<ProtectedRoute element={Aptitude} />} />
-            <Route path="/coding" element={<ProtectedRoute element={Coding} />} />
+            <Route path="/coding" element={<ProtectedRoute element={Coding} onProgressUpdate={setCodingProgress}/>} />
             <Route path="/interview" element={<ProtectedRoute element={InterviewPage} />} />
-            <Route path="/" element={<div><Companies /><FAQ /><Footer /></div>} />
+            <Route path="/profile" element={<ProtectedRoute element={Profile} codingProgress={codingProgress}/>} />
+            <Route path="/" element={<div><Companies/><FAQ /><Footer /></div>} /> 
           </Routes>
         </div>
       </Router>

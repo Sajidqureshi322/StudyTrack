@@ -1,12 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import Logo from '../assets/Logo';
 
 const Header = ({ showButtons, handleLogout }) => {
   return (
     <header className="bg-black py-4 fixed top-0 left-0 w-full z-10 shadow p-8">
       <div className="container mx-auto flex justify-between items-center">
         {/* Logo */}
-        <Link className="text-customRed text-2xl font-bold" to="/">StudyTrack</Link>
+        <Link  to="/"><Logo /></Link>
 
         {/* Navigation links */}
         <nav className="flex space-x-4 items-center">
