@@ -5,6 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import base_url from '../server/api';
+import Logo from '../assets/Logo';
 
 const Signup = () => {
     const [name, setName] = useState('');
@@ -45,10 +46,10 @@ const Signup = () => {
     };
 
     return (
-        <div className="min-h-screen bg-black flex flex-col justify-center items-center">
-            <div className="bg-customBlack rounded-lg p-8 w-96 shadow-lg border-2 border-customOb">
-                <h1 className="text-center text-3xl font-bold text-customRed">StudyTrack</h1>
-                <p className="text-center text-white mb-6">Create an account</p>
+        <div className="flex flex-col items-center justify-center min-h-screen bg-black">
+            <div className="p-8 border-2 rounded-lg shadow-lg bg-customBlack w-96 border-customOb">
+            <h1 className="flex justify-center"><Logo/></h1>
+                <p className="mb-6 text-center text-white">Create an account</p>
 
                 <form className="space-y-4" onSubmit={handleSubmit}>
                     <input
@@ -91,12 +92,12 @@ const Signup = () => {
                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-customRed"
                         required
                     />
-                    <button type="submit" className="w-full bg-customRed text-white py-2 mt-4 rounded-lg hover:bg-customPinkHover">
+                    <button type="submit" className="w-full py-2 mt-4 text-white rounded-lg bg-customRed hover:bg-customPinkHover">
                         Sign Up
                     </button>
                 </form>
 
-                <div className="text-center mt-4 text-white">
+                <div className="mt-4 text-center text-white">
                     Already have an account? <Link to="/login" className="text-customRed hover:underline">Login here</Link>
                 </div>
             </div>

@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import base_url from '../server/api';
+import Logo from '../assets/Logo';
 
 const Login = ({ setShowButtons }) => {
   const [email, setEmail] = useState('');
@@ -40,10 +41,10 @@ const Login = ({ setShowButtons }) => {
   };
 
   return (
-    <div className="min-h-screen bg-black flex flex-col justify-center items-center">
-      <div className="bg-customBlack rounded-lg p-8 w-96 shadow-lg border-2 border-customOb">
-        <h1 className="text-center text-3xl font-bold text-customRed">StudyTrack</h1>
-        <p className="text-center text-gray-300 mb-6">Sign in with your email</p>
+    <div className="flex flex-col items-center justify-center min-h-screen bg-black">
+      <div className="p-8 border-2 rounded-lg shadow-lg bg-customBlack w-96 border-customOb">
+        <h1 className="flex justify-center"><Logo/></h1>
+        <p className="mb-6 text-center text-gray-300">Sign in with your email</p>
         
         <div className="space-y-4">
           <input
@@ -68,12 +69,12 @@ const Login = ({ setShowButtons }) => {
 
         <button
           onClick={handleSubmit}
-          className="w-full bg-customRed text-white py-2 mt-4 rounded-lg hover:bg-customPinkHover"
+          className="w-full py-2 mt-4 text-white rounded-lg bg-customRed hover:bg-customPinkHover"
         >
           Login
         </button>
 
-        <div className="text-center mt-4 text-white">
+        <div className="mt-4 text-center text-white">
           Don’t have an account? <Link to="/signup" className="text-customRed hover:underline">Sign up</Link>
         </div>
       </div>
