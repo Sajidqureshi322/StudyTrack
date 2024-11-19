@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 import base_url from '../server/api';
 import Logo from '../assets/Logo';
 
-const Login = ({ setShowButtons }) => {
+const Login = ({ setShowButtons,onLogin }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
@@ -22,7 +22,7 @@ const Login = ({ setShowButtons }) => {
       if (response.data.message === "Login successful") {
         // Save JWT token in localStorage for persistent session management
         localStorage.setItem("token", response.data.token);
-
+        onLogin();
         // Hide login/signup buttons after successful login
         setShowButtons(false);
 

@@ -1,5 +1,5 @@
 // src/App.jsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -11,33 +11,49 @@ import Footer from './components/Footer';
 import Header from './components/header';
 import InterviewPage from './components/InterviewPage';
 import Login from './components/login';
-// Import the Profile component
-import ProtectedRoute from './components/ProtectedRoute';
 import Signup from './components/Signup';
-import './index.css';
+import ProtectedRoute from './components/ProtectedRoute';
 import Profile from './components/Profile';
+import './index.css';
 
 const App = () => {
-  // State to control visibility of Login and Signup buttons
   const [showButtons, setShowButtons] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // Tracks login state
   const [codingProgress, setCodingProgress] = useState(0);
+
+  // Check login status from localStorage on app load
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    setIsLoggedIn(!!token);
+  }, []);
+
+  const handleLogin = () => {
+    setIsLoggedIn(true); // Update login state on successful login
+    setShowButtons(false); // Hide login/signup buttons
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('token'); // Clear token
+    setIsLoggedIn(false); // Reset login state
+    setShowButtons(true); // Show login/signup buttons
+  };
 
   return (
     <>
       <ToastContainer />
       <Router>
-        {/* Pass showButtons state and setShowButtons function to Header */}
-        <Header showButtons={showButtons} />
+        {/* Pass login state and handlers to Header */}
+        <Header showButtons={showButtons} isLoggedIn={isLoggedIn} handleLogout={handleLogout} />
         <div className="container mx-auto mt-16">
           <Routes>
-            <Route path="/login" element={<Login setShowButtons={setShowButtons} />} />
+            <Route path="/login" element={<Login setShowButtons={setShowButtons} onLogin={handleLogin} />} />
             <Route path="/signup" element={<Signup />} />
-            {/* Add Profile route with ProtectedRoute */}
+            {/* Protected routes */}
             <Route path="/aptitude" element={<ProtectedRoute element={Aptitude} />} />
-            <Route path="/coding" element={<ProtectedRoute element={Coding} onProgressUpdate={setCodingProgress}/>} />
+            <Route path="/coding" element={<ProtectedRoute element={Coding} onProgressUpdate={setCodingProgress} />} />
             <Route path="/interview" element={<ProtectedRoute element={InterviewPage} />} />
-            <Route path="/profile" element={<ProtectedRoute element={Profile} codingProgress={codingProgress}/>} />
-            <Route path="/" element={<div><Companies/><FAQ /><Footer /></div>} /> 
+            <Route path="/profile" element={<ProtectedRoute element={Profile} codingProgress={codingProgress} />} />
+            <Route path="/" element={<div><Companies /><FAQ /><Footer /></div>} />
           </Routes>
         </div>
       </Router>
