@@ -319,6 +319,7 @@ const getColorForDifficulty = (difficulty) => {
 
 const Coding = ({ onProgressUpdate }) => {
   const [selectedTopic, setSelectedTopic] = useState(Object.keys(codingData)[0]);
+  const [selectedDifficulty, setSelectedDifficulty] = useState("All");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentQuestionId, setCurrentQuestionId] = useState(null);
   const [completedQuestions, setCompletedQuestions] = useState(
@@ -341,7 +342,9 @@ const Coding = ({ onProgressUpdate }) => {
       setCompletedQuestions((prevState) => ({
         ...prevState,
         [selectedTopic]: prevState[selectedTopic].map((question) =>
-          question.id === currentQuestionId ? { ...question, solved: !question.solved } : question
+          question.id === currentQuestionId
+            ? { ...question, solved: !question.solved }
+            : question
         ),
       }));
     }
@@ -350,7 +353,9 @@ const Coding = ({ onProgressUpdate }) => {
 
   const calculateProgress = () => {
     const totalQuestions = Object.values(codingData).flat().length;
-    const completedCount = Object.values(completedQuestions).flat().filter((question) => question.solved).length;
+    const completedCount = Object.values(completedQuestions)
+      .flat()
+      .filter((question) => question.solved).length;
     return Math.round((completedCount / totalQuestions) * 100);
   };
 
@@ -359,18 +364,29 @@ const Coding = ({ onProgressUpdate }) => {
     onProgressUpdate(progress);
   }, [completedQuestions, onProgressUpdate]);
 
+  // Filter questions by difficulty
+  const filteredQuestions =
+    selectedDifficulty === "All"
+      ? codingData[selectedTopic]
+      : codingData[selectedTopic].filter(
+        (question) => question.difficulty === selectedDifficulty
+      );
+
   return (
-    <div className="flex min-h-screen bg-black text-white">
-      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} onConfirm={handleConfirmSolve} />
-      <div className="w-1/4 bg-black border border-customBlack rounded-lg p-5 h-screen flex flex-col">
-        <h2 className="text-2xl font-bold mb-5">Coding Topics</h2>
+    <div className="flex min-h-screen text-white bg-black">
+      <Modal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onConfirm={handleConfirmSolve}
+      />
+      <div className="flex flex-col w-1/4 h-screen p-5 bg-black rounded-lg">
+        <h2 className="mb-5 text-2xl font-bold">Coding Topics</h2>
         {Object.keys(codingData).map((topic) => (
           <button
             key={topic}
             onClick={() => setSelectedTopic(topic)}
-            className={`w-full text-left px-4 py-3 m-2 rounded-lg cursor-pointer ${
-              selectedTopic === topic ? "bg-customBlack" : "bg-black"
-            } hover:bg-customBlack flex justify-between items-center`}
+            className={`w-full text-left px-4 py-3 m-2 rounded-lg cursor-pointer ${selectedTopic === topic ? "bg-customBlack" : "bg-black"
+              } hover:bg-customBlack flex justify-between items-center`}
           >
             <div className="flex items-center">
               <VscFileCode className="mr-2 text-xl" />
@@ -383,26 +399,51 @@ const Coding = ({ onProgressUpdate }) => {
         ))}
       </div>
 
-      <div className="rightSection w-3/4 bg-black p-6 space-y-4 overflow-y-auto h-screen">
-        <h2 className="text-2xl font-bold text-white mb-4">
-          {selectedTopic} Questions
-        </h2>
+      <div className="w-3/4 h-screen p-6 space-y-4 overflow-y-auto bg-black rightSection">
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-2xl font-bold text-white">{selectedTopic} Questions</h2>
+          <select
+            className="px-4 py-2 text-white border-none rounded-lg outline-none bg-customBlack"
+            value={selectedDifficulty}
+            onChange={(e) => setSelectedDifficulty(e.target.value)}
+          >
+            <option  value="All">All</option>
+            <option className="text-green-400" value="Easy">Easy</option>
+            <option className="text-yellow-400" value="Medium">Medium</option>
+            <option className="text-red-400">Hard</option>
+          </select>
+        </div>
+
         <ul className="space-y-3">
-          {codingData[selectedTopic].map((question) => (
-            <li key={question.id} className="bg-customBlack p-4 rounded-lg hover:bg-customOb flex items-center justify-between">
-              <a href={question.link} target="_blank" rel="noopener noreferrer" className="text-lg font-semibold text-blue-400 flex items-center">
+          {filteredQuestions.map((question) => (
+            <li
+              key={question.id}
+              className="flex items-center justify-between p-4 rounded-lg bg-customBlack hover:bg-customOb"
+            >
+              <a
+                href={question.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center text-lg font-semibold text-blue-400"
+              >
                 <FaLink className="mr-2" />
                 {question.title}
               </a>
               <div className="flex items-center">
-                <span className={`ml-4 ${getColorForDifficulty(question.difficulty)} font-semibold`}>
+                <span
+                  className={`ml-4 ${getColorForDifficulty(
+                    question.difficulty
+                  )} font-semibold`}
+                >
                   {question.difficulty}
                 </span>
                 <button
                   onClick={() => openModal(question.id)}
                   className="ml-4 text-green-400 focus:outline-none"
                 >
-                  {completedQuestions[selectedTopic]?.find((q) => q.id === question.id)?.solved ? (
+                  {completedQuestions[selectedTopic]?.find(
+                    (q) => q.id === question.id
+                  )?.solved ? (
                     <FaCheckCircle className="text-green-500" />
                   ) : (
                     <FaCheckCircle className="text-gray-500" />
