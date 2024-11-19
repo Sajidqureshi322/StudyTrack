@@ -1,6 +1,7 @@
 package com.StudyTrack.StudyTrackBackend.Controller;
 import com.StudyTrack.StudyTrackBackend.Entity.UserProfile;
 import com.StudyTrack.StudyTrackBackend.Repository.UserProfileRepository;
+import com.StudyTrack.StudyTrackBackend.Security.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -17,6 +18,8 @@ import java.util.Map;
 @CrossOrigin("http://localhost:3000")
 public class AuthController {
 
+    @Autowired
+    private JwtUtils jwtUtils;
     @Autowired
     private UserProfileRepository userProfileRepository;
 
@@ -56,11 +59,14 @@ public class AuthController {
                     new UsernamePasswordAuthenticationToken(email, password)
             );
 
+            // Generate JWT token
+            String token = jwtUtils.generateToken(email);
+
             Map<String, String> response = new HashMap<>();
             response.put("message", "Login successful");
+            response.put("token", token); // Include token in response
             return response;
         } catch (AuthenticationException e) {
-            System.out.println("Authentication failed: " + e.getMessage()); // Add this log
             Map<String, String> response = new HashMap<>();
             response.put("message", "Invalid email or password");
             return response;
