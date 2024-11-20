@@ -65,6 +65,13 @@ public class AuthController {
             Map<String, String> response = new HashMap<>();
             response.put("message", "Login successful");
             response.put("token", token); // Include token in response
+            UserProfile userProfile = userProfileRepository.findByEmail(email).orElse(null);
+                if(userProfile!=null){
+                    response.put("name", String.valueOf(userProfile.getName()));
+                    response.put("email", String.valueOf(userProfile.getEmail()));
+                    response.put("phone",String.valueOf(userProfile.getPhoneNumber()));
+                    response.put("university",String.valueOf(userProfile.getUniversityName()));
+                }
             return response;
         } catch (AuthenticationException e) {
             Map<String, String> response = new HashMap<>();

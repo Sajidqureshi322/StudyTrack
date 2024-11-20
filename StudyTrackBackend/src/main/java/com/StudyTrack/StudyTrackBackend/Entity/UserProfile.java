@@ -15,18 +15,7 @@ public class UserProfile {
     private String phoneNumber;
     private String universityName;
 
-    public int getTotalProblemSolved() {
-        return totalProblemSolved;
-    }
-
-    public void setTotalProblemSolved(int totalProblemSolved) {
-        this.totalProblemSolved = totalProblemSolved;
-    }
-
-    private int totalProblemSolved;
-
     public UserProfile() {
-        totalProblemSolved = 0;
     }
 
     @Override
