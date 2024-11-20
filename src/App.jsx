@@ -1,4 +1,3 @@
-// src/App.jsx
 import React, { useState, useEffect } from 'react';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
@@ -25,6 +24,7 @@ const App = () => {
   useEffect(() => {
     const token = localStorage.getItem('token');
     setIsLoggedIn(!!token);
+    setShowButtons(!token);
   }, []);
 
   const handleLogin = () => {
@@ -32,27 +32,35 @@ const App = () => {
     setShowButtons(false); // Hide login/signup buttons
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem('token'); // Clear token
-    setIsLoggedIn(false); // Reset login state
-    setShowButtons(true); // Show login/signup buttons
-  };
-
   return (
     <>
       <ToastContainer />
       <Router>
         {/* Pass login state and handlers to Header */}
-        <Header showButtons={showButtons} isLoggedIn={isLoggedIn} handleLogout={handleLogout} />
+        <Header
+          showButtons={showButtons}
+          isLoggedIn={isLoggedIn}
+          setIsLoggedIn={setIsLoggedIn}
+          setShowButtons={setShowButtons}
+        />
         <div className="container mx-auto mt-16">
           <Routes>
-            <Route path="/login" element={<Login setShowButtons={setShowButtons} onLogin={handleLogin} />} />
+            <Route
+              path="/login"
+              element={<Login setShowButtons={setShowButtons} onLogin={handleLogin} />}
+            />
             <Route path="/signup" element={<Signup />} />
             {/* Protected routes */}
             <Route path="/aptitude" element={<ProtectedRoute element={Aptitude} />} />
-            <Route path="/coding" element={<ProtectedRoute element={Coding} onProgressUpdate={setCodingProgress} />} />
+            <Route
+              path="/coding"
+              element={<ProtectedRoute element={Coding} onProgressUpdate={setCodingProgress} />}
+            />
             <Route path="/interview" element={<ProtectedRoute element={InterviewPage} />} />
-            <Route path="/profile" element={<ProtectedRoute element={Profile} codingProgress={codingProgress} />} />
+            <Route
+              path="/profile"
+              element={<ProtectedRoute element={Profile} codingProgress={codingProgress} />}
+            />
             <Route path="/" element={<div><Companies /><FAQ /><Footer /></div>} />
           </Routes>
         </div>
