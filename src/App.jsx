@@ -13,6 +13,7 @@ import Login from './components/login';
 import Signup from './components/Signup';
 import ProtectedRoute from './components/ProtectedRoute';
 import Profile from './components/Profile';
+import AdminPanel from "./components/AdminPanel";
 import './index.css';
 
 const App = () => {
@@ -62,6 +63,7 @@ const App = () => {
               element={<ProtectedRoute element={Profile} codingProgress={codingProgress} />}
             />
             <Route path="/" element={<div><Companies /><FAQ /><Footer /></div>} />
+            <Route path="/admin" element={<AdminPanel />} />
           </Routes>
         </div>
       </Router>
