@@ -19,30 +19,49 @@ const Signup = () => {
         e.preventDefault();
         // Handle signup logic (e.g., API call)
         console.log({ name, email, password, phoneNumber, universityName });
-
-        axios.post(base_url + "/register", {
-            name : name,
-            email : email,
-            password : password,
-            phoneNumber : phoneNumber ,
-            universityName : universityName
-        })
-        .then(function (response) {
-            console.log(response.data);
-            if(response.data === "Email already registered"){
-                toast.warning("User already exists");
+        let new_name = name.trim(); 
+        let new_password = password.trim();
+        let new_number =  phoneNumber.trim();
+        if(new_name === name && new_password ===password && phoneNumber.length === 10 && new_number === phoneNumber){
+            axios.post(base_url + "/register", {
+                name : name,
+                email : email,
+                password : password,
+                phoneNumber : phoneNumber ,
+                universityName : universityName
+            })
+            .then(function (response) {
+                console.log(response.data);
+                if(response.data === "Email already registered"){
+                    toast.warning("User already exists");
+                }
+                else{
+                    toast.success("User Registered Successfully");
+                    console.log(response);
+                    navigate('/login'); 
+                }
+                // Redirect to login page after signup
+            })
+            .catch(function (error) {
+                toast.error("Server Error ! Try Again");
+                console.log("Error Occured" + error);
+            });     
+        }
+        else{
+            if(new_name !== name){
+                toast.warning("Name can not have starting and ending spaces");
+            }
+            else if(new_password !== password){
+                toast.warning("Password can not have spaces");
+            }
+            else if(phoneNumber.length !== 10){
+                toast.warning("Please ensure that phone number has 10 digits only")
             }
             else{
-                toast.success("User Registered Successfully");
-                console.log(response);
-                navigate('/login'); 
+                toast.warning("Phone number cannot have spaces");
             }
-            // Redirect to login page after signup
-        })
-        .catch(function (error) {
-            toast.error("Server Error ! Try Again");
-            console.log("Error Occured" + error);
-        });     
+        }
+        
     };
 
     return (

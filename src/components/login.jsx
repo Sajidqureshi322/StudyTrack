@@ -22,6 +22,15 @@ const Login = ({ setShowButtons,onLogin }) => {
       if (response.data.message === "Login successful") {
         // Save JWT token in localStorage for persistent session management
         localStorage.setItem("token", response.data.token);
+        localStorage.setItem("name", response.data.name);
+        localStorage.setItem("email", response.data.email);
+        localStorage.setItem("phone", response.data.phone);
+        localStorage.setItem("university", response.data.university);
+        console.log(localStorage.getItem("name"));        // Fetches the name
+        console.log(localStorage.getItem("email"));       // Fetches the email
+        console.log(localStorage.getItem("token"));       // Fetches the token
+        console.log(localStorage.getItem("phone"));       // Fetches the phone
+        console.log(localStorage.getItem("university")); 
         onLogin();
         // Hide login/signup buttons after successful login
         setShowButtons(false);

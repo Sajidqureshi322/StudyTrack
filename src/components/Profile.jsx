@@ -6,10 +6,10 @@ import { FaLinkedin, FaGithub, FaEnvelope, FaMapMarkerAlt, FaUniversity } from '
 const Profile = ({ user, codingProgress }) => {
   // Sample user data
   const userData = user || {
-    name: "Zaid Khan",
-    email: "zaidkhan@example.com",
+    name: localStorage.getItem("name"),
+    email: localStorage.getItem("email"),
     location: "Indore, India",
-    college: "svvv",
+    college: localStorage.getItem("university"),
     socialLinks: {
       linkedin: "https://www.linkedin.com/in/zaidkhan",
       github: "https://github.com/zaidkhan",
