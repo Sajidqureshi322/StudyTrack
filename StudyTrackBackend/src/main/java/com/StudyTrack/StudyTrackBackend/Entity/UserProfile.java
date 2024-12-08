@@ -1,8 +1,10 @@
 package com.StudyTrack.StudyTrackBackend.Entity;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+
 
 @Entity
 public class UserProfile {
@@ -10,12 +12,34 @@ public class UserProfile {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     private String name;
+    @Column(unique = true)
     private String email;
     private String password;
     private String phoneNumber;
     private String universityName;
+    private String questions ;
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    private String role;
+
+    public String getQuestions() {
+        return questions;
+    }
+
+    public void setQuestions(String questions) {
+        this.questions = questions;
+    }
 
     public UserProfile() {
+        questions = "F".repeat(251);
+        setRole("user");
     }
 
     @Override
@@ -87,4 +111,3 @@ public class UserProfile {
         this.universityName = universityName;
     }
 }
-
