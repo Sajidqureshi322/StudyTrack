@@ -2,8 +2,8 @@ import axios from 'axios';
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import base_url from '../server/api';
 import Logo from '../assets/Logo';
+import base_url from '../server/api';
 
 const Login = ({ setShowButtons,onLogin }) => {
   const [email, setEmail] = useState('');
@@ -26,18 +26,32 @@ const Login = ({ setShowButtons,onLogin }) => {
         localStorage.setItem("email", response.data.email);
         localStorage.setItem("phone", response.data.phone);
         localStorage.setItem("university", response.data.university);
+        localStorage.setItem("role" , response.data.role);
         console.log(localStorage.getItem("name"));        // Fetches the name
         console.log(localStorage.getItem("email"));       // Fetches the email
         console.log(localStorage.getItem("token"));       // Fetches the token
         console.log(localStorage.getItem("phone"));       // Fetches the phone
         console.log(localStorage.getItem("university")); 
+        console.log(localStorage.getItem("role"));
+
+        if(response.data.role === 'admin'){
+          let usersList = JSON.parse(response.data.users);
+          const emailToRemove = response.data.email;
+          usersList = usersList.filter(user => user.email !== emailToRemove);
+
+          localStorage.setItem("users", JSON.stringify(usersList));
+          console.log(response.data.users);
+        }
         onLogin();
         // Hide login/signup buttons after successful login
         setShowButtons(false);
 
         // Display success notification and navigate to home or protected page
         toast.success("Login Successfully");
-        navigate("/"); // Redirect to home or another protected route
+        if(response.data.role === "admin")
+          navigate("/admin");
+        else
+          navigate("/"); // Redirect to home or another protected route
 
       } else {  
         toast.error("Invalid Username or Password");

@@ -1,19 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import AdminPanel from "./components/AdminPanel";
 import Aptitude from './components/Aptitude';
 import Coding from './components/Coding';
 import Companies from './components/Companies';
 import FAQ from './components/FAQ';
 import Footer from './components/Footer';
+import ForgotPassword from './components/ForgotPassword';
 import Header from './components/header';
 import InterviewPage from './components/InterviewPage';
 import Login from './components/login';
-import Signup from './components/Signup';
-import ProtectedRoute from './components/ProtectedRoute';
 import Profile from './components/Profile';
-import AdminPanel from "./components/AdminPanel";
+import ProtectedRoute from './components/ProtectedRoute';
+import Signup from './components/Signup';
 import './index.css';
 
 const App = () => {
@@ -63,7 +64,8 @@ const App = () => {
               element={<ProtectedRoute element={Profile} codingProgress={codingProgress} />}
             />
             <Route path="/" element={<div><Companies /><FAQ /><Footer /></div>} />
-            <Route path="/admin" element={<AdminPanel />} />
+            <Route path="/admin" element={<ProtectedRoute  element={AdminPanel} />}></Route>
+            <Route path="/forgot-password" element={<ForgotPassword />} />
           </Routes>
         </div>
       </Router>

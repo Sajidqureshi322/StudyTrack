@@ -1,16 +1,55 @@
-import React, { useState } from "react";
+
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { toast } from "react-toastify";
+import base_url from "../server/api";
 
 const AdminPanel = () => {
-  // Dummy data for users
-  const [users, setUsers] = useState([
-    { id: 1, name: "Yogesh Patel", email: "john@example.com", phone: "123-456-7890", college: "SVV" },
-    { id: 2, name: "Sajid Qureshi", email: "jane@example.com", phone: "987-654-3210", college: "SVV" },
-    { id: 3, name: "Shubham Khan", email: "alice@example.com", phone: "555-555-5555", college: "SVV" },
-  ]);
+  // Dummy data for users  
+  const [users, setUsers] = useState(() => {
+    let storedUsers = localStorage.getItem("users");
+    return storedUsers ? JSON.parse(storedUsers) : []; // Fallback to an empty array
+  });
+
+  // setUsers(localStorage.getItem("users"));
 
   // Function to delete a user
-  const deleteUser = (id) => {
-    setUsers(users.filter((user) => user.id !== id));
+  const deleteUser = async(id) => {
+    const userToDelete = users.find((user) => user.id === id);
+    console.log(userToDelete.email)
+    try{
+      const response = await axios.post(`${base_url}/deleteByEmail` , {email : userToDelete.email})
+      console.log(response.data)
+      if(response.data == "user deleted successfully"){
+        const updatedUsers = users.filter((user) => user.id !== id);
+        setUsers(updatedUsers);
+        // Persist the updated list to localStorage
+        localStorage.setItem("users", JSON.stringify(updatedUsers));
+        toast.success("User Deleted Successfully");
+      }
+      else toast.error("Something went wrong !! Try again");
+    }
+    catch(e){
+      toast.error("Server down");
+      console.log(e);
+    }
+    
+  };
+
+  // Optional: Sync localStorage with users state when it changes
+  useEffect(() => {
+    localStorage.setItem("users", JSON.stringify(users));
+  }, [users]);
+
+  const userData = {
+    name: localStorage.getItem("name"),
+    email: localStorage.getItem("email"),
+    location: "Indore, India",
+    college: localStorage.getItem("university"),
+    socialLinks: {
+      linkedin: "",
+      github: "",
+    }
   };
 
   return (
@@ -26,14 +65,14 @@ const AdminPanel = () => {
           />
         </div>
 
-        <h1 className="mb-2 text-2xl font-bold">Zaid Khan</h1>
-        <p className="text-sm">Admin</p>
-        <p className="mt-2">Email: zaid@example.com</p>
+        <h1 className="mb-2 text-2xl font-bold">{userData.name}</h1>
+        {/* <p className="text-sm">Admin</p> */}
+        <p className="mt-2">{userData.email}</p>
         <p>Location: Indore, India</p>
-        <p>Post: Super Admin</p>
+        <p>Post: Admin</p>
       </div>
 
-      {/* Right Section: User List */}
+{/* Right Section: User List */}
       <div className="w-2/3 p-8 m-4 rounded-lg bg-customBlack">
         {/* User Table */}
         <h2 className="mb-5 text-2xl font-bold text-white">User Information</h2>
@@ -54,8 +93,8 @@ const AdminPanel = () => {
                 <td className="p-2 text-white border border-gray-600">{index + 1}</td> {/* Display serial number */}
                 <td className="p-2 text-white border border-gray-600">{user.name}</td>
                 <td className="p-2 text-white border border-gray-600">{user.email}</td>
-                <td className="p-2 text-white border border-gray-600">{user.phone}</td>
-                <td className="p-2 text-white border border-gray-600">{user.college}</td>
+                <td className="p-2 text-white border border-gray-600">{user.phoneNumber}</td>
+                <td className="p-2 text-white border border-gray-600">{user.universityName}</td>
                 <td className="p-2 text-center border border-gray-600">
                   <button
                     className="px-3 py-1 text-white rounded bg-customRed hover:bg-customPinkHover"
