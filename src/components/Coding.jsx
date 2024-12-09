@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { FaLink } from "react-icons/fa6"; // Importing the link icon
 import { VscFileCode } from "react-icons/vsc"; // Importing the code file icon
-import { FaCheckCircle } from "react-icons/fa";
 
 // All questions from the PDF, categorized by topics with difficulty levels
 const codingData = {
@@ -318,54 +317,17 @@ const getColorForDifficulty = (difficulty) => {
 
 const Coding = ({ onProgressUpdate }) => {
   const [selectedTopic, setSelectedTopic] = useState(Object.keys(codingData)[0]);
-  
-  // Initialize completedQuestions with an empty array for each topic
-  const [completedQuestions, setCompletedQuestions] = useState(
-    Object.keys(codingData).reduce((acc, topic) => {
-      acc[topic] = codingData[topic].map((question) => ({
-        ...question,
-        solved: false, // Default all questions as unsolved
-      }));
-      return acc;
-    }, {})
-  );
-
-  const handleSolvedClick = (questionId, topic) => {
-    const confirmSolve = window.confirm("Are you sure you solved this question?");
-    if (confirmSolve) {
-      setCompletedQuestions(prevState => ({
-        ...prevState,
-        [topic]: prevState[topic].map((question) =>
-          question.id === questionId ? { ...question, solved: !question.solved } : question // Toggle the solved status
-        ),
-      }));
-    }
-  };
-
-  // Calculate coding progress percentage
-  const calculateProgress = () => {
-    const totalQuestions = Object.values(codingData).flat().length;
-    const completedCount = Object.values(completedQuestions).flat().filter(question => question.solved).length;
-    return Math.round((completedCount / totalQuestions) * 100);
-  };
-
-  // Update progress whenever completedQuestions state changes
-  useEffect(() => {
-    const progress = calculateProgress();
-    onProgressUpdate(progress);
-  }, [completedQuestions, onProgressUpdate]);
 
   return (
-    <div className="flex min-h-screen bg-black text-white">
-      <div className="w-1/4 bg-black border border-customBlack rounded-lg p-5 h-screen flex flex-col">
+    <div className="flex min-h-screen bg-black text-white ">
+      <div className=" w-1/4 bg-black border border-customBlack rounded-lg p-5 h-screen flex flex-col">
         <h2 className="text-2xl font-bold mb-5">Coding Topics</h2>
         {Object.keys(codingData).map((topic) => (
           <button
             key={topic}
             onClick={() => setSelectedTopic(topic)}
-            className={`w-full text-left px-4 py-3 m-2 rounded-lg cursor-pointer ${
-              selectedTopic === topic ? "bg-customBlack" : "bg-black"
-            } hover:bg-customBlack flex justify-between items-center`}
+            className={`w-full text-left px-4 py-3 m-2 rounded-lg cursor-pointer  ${selectedTopic === topic ? "bg-customBlack" : "bg-black"
+              } hover:bg-customBlack flex justify-between items-center`}
           >
             <div className="flex items-center">
               <VscFileCode className="mr-2 text-xl" />
@@ -379,31 +341,19 @@ const Coding = ({ onProgressUpdate }) => {
       </div>
 
       <div className="rightSection w-3/4 bg-black p-6 space-y-4 overflow-y-auto h-screen">
-        <h2 className="text-2xl font-bold text-white mb-4">
+        <h2 className="text-2xl font-bold text-white mb-4 ">
           {selectedTopic} Questions
         </h2>
-        <ul className="space-y-3">
+        <ul className="space-y-3 ">
           {codingData[selectedTopic].map((question) => (
-            <li key={question.id} className="bg-customBlack p-4 rounded-lg hover:bg-customOb flex items-center justify-between">
-              <a href={question.link} target="_blank" rel="noopener noreferrer" className="text-lg font-semibold text-blue-400 flex items-center">
+            <li key={question.id} className="bg-customBlack p-4 rounded-lg hover:bg-customOb flex items-center justify-between ">
+              <a href={question.link} target="_blank" rel="noopener noreferrer" className="text-lg font-semibold text-blue-400 flex items-center ">
                 <FaLink className="mr-2" />
                 {question.title}
               </a>
-              <div className="flex items-center">
-                <span className={`ml-4 ${getColorForDifficulty(question.difficulty)} font-semibold`}>
-                  {question.difficulty}
-                </span>
-                <button
-                  onClick={() => handleSolvedClick(question.id, selectedTopic)}
-                  className="ml-4 text-green-400 focus:outline-none"
-                >
-                  {completedQuestions[selectedTopic]?.find(q => q.id === question.id)?.solved ? (
-                    <FaCheckCircle className="text-green-500" />
-                  ) : (
-                    <FaCheckCircle className="text-gray-500" />
-                  )}
-                </button>
-              </div>
+              <span className={`ml-4 ${getColorForDifficulty(question.difficulty)} font-semibold`}>
+                {question.difficulty}
+              </span>
             </li>
           ))}
         </ul>

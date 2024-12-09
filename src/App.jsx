@@ -1,40 +1,48 @@
-// src/App.jsx
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import AdminPanel from "./components/AdminPanel";
 import Aptitude from './components/Aptitude';
-import Coding from './components/Coding'
+import Coding from './components/Coding';
 import Companies from './components/Companies';
 import FAQ from './components/FAQ';
 import Footer from './components/Footer';
+import ForgotPassword from './components/ForgotPassword';
 import Header from './components/header';
+import InterviewPage from './components/InterviewPage';
 import Login from './components/login';
-import Signup from './components/Signup'; 
+import Profile from './components/Profile';
+import ProtectedRoute from './components/ProtectedRoute';
+import Signup from './components/Signup';
 import './index.css';
 import InterviewPage from './components/InterviewPage';
 import { ToastContainer } from 'react-toastify';
-import Profile from './components/Profile';
-
 
 const App = () => {
-  // State to control visibility of Login and Signup buttons
   const [showButtons, setShowButtons] = useState(true);
-  const [codingProgress, setCodingProgress] = useState(0);
 
   return (
     <>
-      <ToastContainer/>
+      <ToastContainer />
       <Router>
-        {/* Pass showButtons state and setShowButtons function to Header */}
-        <Header showButtons={showButtons} />
+        {/* Pass login state and handlers to Header */}
+        <Header
+          showButtons={showButtons}
+          isLoggedIn={isLoggedIn}
+          setIsLoggedIn={setIsLoggedIn}
+          setShowButtons={setShowButtons}
+        />
         <div className="container mx-auto mt-16">
           <Routes>
-            {/* Pass setShowButtons to Login component */}
-            <Route path="/login" element={<Login setShowButtons={setShowButtons} />} />
+            <Route
+              path="/login"
+              element={<Login setShowButtons={setShowButtons} onLogin={handleLogin} />}
+            />
             <Route path="/signup" element={<Signup />} />
             <Route path="/aptitude" element={<div><Aptitude /> <Footer/></div>} />
-            <Route path="/coding" element={<div><Coding onProgressUpdate={setCodingProgress} /> <Footer /></div>} />
+            <Route path="/coding" element={<div><Coding /> <Footer/></div>} />
             <Route path="/interview" element={<InterviewPage />} />
-            <Route path="/profile" element={<Profile codingProgress={codingProgress} />} />
             <Route path="/" element={
               <div>
                 <Companies />
@@ -50,4 +58,3 @@ const App = () => {
 };
 
 export default App;
-
